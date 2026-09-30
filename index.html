@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国スポ2026 都道府県別成績・競技情報 | 市公式ポータル</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for lightweight UI state management -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wf: {
+                            blue: '#146ef5',
+                            indigo: '#1366e2',
+                            mercury: '#6ca7ff',
+                            mint: '#60ed76',
+                            apricot: '#ffa666',
+                            obsidian: '#080808',
+                            white: '#ffffff',
+                            slate: '#5a5a5a',
+                            ash: '#d8d8d8',
+                            smoke: '#bdbdbd',
+                            graphite: '#222222',
+                            onyx: '#171717',
+                            mist: '#f0f0f0',
+                            charcoal: '#292929',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    borderRadius: {
+                        tag: '4px',
+                        btn: '4px',
+                        input: '4px',
+                        card: '8px',
+                        frame: '8px',
+                    },
+                    boxShadow: {
+                        'wf-card': 'rgba(0, 0, 0, 0.01) 0px 54px 22px 0px, rgba(0, 0, 0, 0.04) 0px 30px 18px 0px, rgba(0, 0, 0, 0.08) 0px 13px 13px 0px, rgba(0, 0, 0, 0.09) 0px 3px 7px 0px',
+                        'wf-frame': 'rgba(0, 0, 0, 0.02) 0px 67px 27px 0px, rgba(0, 0, 0, 0.06) 0px 38px 23px 0px, rgba(0, 0, 0, 0.1) 0px 17px 17px 0px, rgba(0, 0, 0, 0.12) 0px 4px 9px 0px',
+                        'wf-elevated': 'rgba(0, 0, 0, 0.01) 0px 148px 42px 0px, rgba(0, 0, 0, 0.04) 0px 95px 38px 0px, rgba(0, 0, 0, 0.15) 0px 53px 32px 0px, rgba(0, 0, 0, 0.26) 0px 24px 24px 0px',
+                    },
+                    letterSpacing: {
+                        eyebrow: '0.1em',
+                        display: '-0.01em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .wf-headline {
+            letter-spacing: -0.01em;
+            font-feature-settings: "calt";
+        }
+
+        /* 最小フォントサイズを15ポイントに設定 & スケール最適化 */
+        :root {
+            font-size: 15pt;
+        }
+        body {
+            font-size: 15pt;
+            line-height: 1.5;
+        }
+
+        /* 15pt 未満のフォントクラスをすべて 15pt 以上に統一 */
+        .text-\[10px\], 
+        .text-\[11px\], 
+        .text-\[12px\], 
+        .text-\[13px\], 
+        .text-xs, 
+        .text-sm {
+            font-size: 15pt !important;
+            line-height: 1.5 !important;
+        }
+
+        /* 本文と見出しを 15pt を基準に視認性高くスケールアップ */
+        .text-base {
+            font-size: 16pt !important;
+            line-height: 1.45 !important;
+        }
+        .text-lg {
+            font-size: 18pt !important;
+            line-height: 1.35 !important;
+        }
+        .text-xl {
+            font-size: 20pt !important;
+            line-height: 1.3 !important;
+        }
+        .text-2xl {
+            font-size: 24pt !important;
+            line-height: 1.25 !important;
+        }
+        .text-3xl {
+            font-size: 28pt !important;
+            line-height: 1.2 !important;
+        }
+
+        /* 入力フォーム・ボタンの最小フォント保証 */
+        button, input, textarea, select, span, label, p, a {
+            min-font-size: 15pt;
+        }
+    </style>
+</head>
+<body class="bg-wf-mist font-sans text-wf-obsidian antialiased min-h-screen flex flex-col justify-between selection:bg-wf-blue selection:text-white">
+
+    <div x-data="kokuspoApp()" x-cloak class="max-w-4xl mx-auto w-full min-h-screen bg-wf-white shadow-2xl flex flex-col relative overflow-hidden border-x border-wf-ash">
+        
+        <!-- Webflow Announcement Ribbon Banner -->
+        <div class="bg-wf-blue text-white px-4 py-2.5 flex items-center justify-between text-[15pt] font-medium z-40 flex-wrap gap-2">
+            <div class="flex items-center gap-2 mx-auto sm:mx-0 flex-wrap">
+                <span class="bg-white/20 text-white font-mono uppercase text-[15pt] px-2 py-0.5 rounded-tag font-semibold">LIVE REPORT</span>
+                <span>国民スポーツ大会 2026 — 大会第4日目（全11日）熱戦速報中</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-[15pt] text-white/90 flex-wrap mx-auto sm:mx-0">
+                <div class="flex items-center gap-1.5 bg-black/15 px-2 py-0.5 rounded-tag border border-white/20">
+                    <label for="homePrefSelect" class="text-white/90 font-medium">我が県:</label>
+                    <select id="homePrefSelect" 
+                            x-model.number="homePrefectureId" 
+                            @change="showToast('我が県を「' + getHomePrefecture().name + '」に設定しました')"
+                            class="bg-white text-wf-obsidian font-bold text-[15pt] rounded-tag px-2 py-0.5 border border-wf-ash focus:outline-none focus:ring-2 focus:ring-wf-blue cursor-pointer">
+                        <template x-for="p in sortedPrefecturesById" :key="p.id">
+                            <option :value="p.id" x-text="p.name" :selected="p.id === homePrefectureId"></option>
+                        </template>
+                    </select>
+                </div>
+                <span>現在順位: <strong class="underline font-bold text-white" x-text="'第 ' + (trophyType === 'kogo' ? getHomePrefecture().kogoRank : getHomePrefecture().rank) + ' 位'"></strong></span>
+            </div>
+        </div>
+
+        <!-- Webflow Studio Style Header -->
+        <header class="bg-wf-white border-b border-wf-ash px-6 py-4 sticky top-0 z-30 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-wf-blue rounded-tag flex items-center justify-center text-white text-[15pt] font-bold font-mono">
+                    W
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <h1 class="text-xl font-bold tracking-display text-wf-obsidian">国スポ2026 成績速報</h1>
+                    <span class="text-[15pt] text-wf-slate hidden sm:inline font-mono">/ 市公式ポータル</span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div class="hidden md:flex items-center gap-1.5 text-[15pt] text-wf-slate border border-wf-ash px-3 py-1 rounded-input font-mono">
+                    <span class="w-2.5 h-2.5 rounded-full bg-wf-mint"></span>
+                    <span>ONLINE: 2026 AUTUMN</span>
+                </div>
+                <!-- Primary Action Button: 4px radius, #146ef5 -->
+                <button @click="showInfoModal = true" class="bg-wf-obsidian hover:bg-wf-charcoal text-white text-[15pt] font-medium px-4 py-2 rounded-btn transition flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-[15pt]"></i>
+                    <span>情報ガイド</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Clean Webflow Tab Navigation Bar (Understated 4px radius, clear active blue state) -->
+        <div class="sticky top-[61px] z-20 bg-wf-white border-b border-wf-ash px-4 sm:px-6 py-2.5 flex items-center justify-between overflow-x-auto hide-scrollbar">
+            <nav class="flex space-x-2 sm:space-x-3 text-[15pt] font-medium whitespace-nowrap">
+                <button @click="activeTab = 'ranking'" 
+                        :class="activeTab === 'ranking' ? 'text-wf-blue border-b-2 border-wf-blue font-semibold pb-2 pt-1' : 'text-wf-slate hover:text-wf-obsidian pb-2 pt-1 border-b-2 border-transparent'"
+                        class="px-3 transition flex items-center gap-2">
+                    <i class="fa-solid fa-chart-simple text-[15pt]"></i>
+                    <span>都道府県順位</span>
+                </button>
+                <button @click="activeTab = 'sports'" 
+                        :class="activeTab === 'sports' ? 'text-wf-blue border-b-2 border-wf-blue font-semibold pb-2 pt-1' : 'text-wf-slate hover:text-wf-obsidian pb-2 pt-1 border-b-2 border-transparent'"
+                        class="px-3 transition flex items-center gap-2">
+                    <i class="fa-solid fa-table-cells-large text-[15pt]"></i>
+                    <span>競技・日程</span>
+                </button>
+                <button @click="activeTab = 'local'" 
+                        :class="activeTab === 'local' ? 'text-wf-blue border-b-2 border-wf-blue font-semibold pb-2 pt-1' : 'text-wf-slate hover:text-wf-obsidian pb-2 pt-1 border-b-2 border-transparent'"
+                        class="px-3 transition flex items-center gap-2 relative">
+                    <i class="fa-solid fa-location-crosshairs text-[15pt]"></i>
+                    <span>市ゆかり・会場</span>
+                    <span class="w-2 h-2 rounded-full bg-wf-blue"></span>
+                </button>
+                <button @click="activeTab = 'news'" 
+                        :class="activeTab === 'news' ? 'text-wf-blue border-b-2 border-wf-blue font-semibold pb-2 pt-1' : 'text-wf-slate hover:text-wf-obsidian pb-2 pt-1 border-b-2 border-transparent'"
+                        class="px-3 transition flex items-center gap-2">
+                    <i class="fa-regular fa-newspaper text-[15pt]"></i>
+                    <span>速報ニュース</span>
+                </button>
+            </nav>
+
+            <div class="hidden sm:flex items-center text-[15pt] font-mono text-wf-slate ml-3 whitespace-nowrap">
+                <span class="text-wf-blue font-bold mr-1">LIVE</span> 09:30 UPDATED
+            </div>
+        </div>
+
+        <!-- Main Content Canvas -->
+        <main class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-8 bg-wf-white pb-24">
+
+            <!-- TAB 1: 都道府県別順位 (Rankings) -->
+            <section x-show="activeTab === 'ranking'" class="space-y-6">
+                <!-- Eyebrow + Section Title -->
+                <div>
+                    <span class="text-[12px] font-semibold text-wf-slate uppercase tracking-eyebrow font-mono">STANDINGS & SCORES</span>
+                    <h2 class="text-2xl sm:text-3xl font-semibold tracking-display text-wf-obsidian mt-1">全国総合成績ランキング</h2>
+                    <p class="text-sm text-wf-slate mt-1.5">男女総合成績（天皇杯）および女子総合成績（皇后杯）のリアルタイム集計状況です。</p>
+                </div>
+
+                <!-- Browser Chrome Style Filter Box -->
+                <div class="border border-wf-ash rounded-frame overflow-hidden bg-wf-white">
+                    <!-- Browser Window Mockup Bar -->
+                    <div class="bg-wf-mist border-b border-wf-ash px-4 py-2 flex items-center justify-between text-xs">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#ff5f56] inline-block border border-black/10"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#ffbd2e] inline-block border border-black/10"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#27c93f] inline-block border border-black/10"></span>
+                            <span class="ml-2 font-mono text-[11px] text-wf-slate hidden sm:inline">kokuspo2026://rankings/filter</span>
+                        </div>
+                        <span class="text-[11px] font-mono text-wf-slate">DISPLAY: ALL 47 PREFECTURES</span>
+                    </div>
+
+                    <div class="p-4 space-y-3">
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                            <!-- Trophy Segmented Controls (4px border-radius) -->
+                            <div class="inline-flex bg-wf-mist p-1 rounded-tag text-xs font-medium border border-wf-ash/60">
+                                <button @click="trophyType = 'tenno'" 
+                                        :class="trophyType === 'tenno' ? 'bg-wf-white text-wf-obsidian shadow-sm border border-wf-ash font-semibold' : 'text-wf-slate hover:text-wf-obsidian'"
+                                        class="px-4 py-1.5 rounded-tag transition text-center">
+                                    天皇杯（男女総合成績）
+                                </button>
+                                <button @click="trophyType = 'kogo'" 
+                                        :class="trophyType === 'kogo' ? 'bg-wf-white text-wf-obsidian shadow-sm border border-wf-ash font-semibold' : 'text-wf-slate hover:text-wf-obsidian'"
+                                        class="px-4 py-1.5 rounded-tag transition text-center">
+                                    皇后杯（女子総合成績）
+                                </button>
+                            </div>
+
+                            <!-- Search Input (4px radius, 1px ash border) -->
+                            <div class="relative flex-1 max-w-sm">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-wf-slate text-xs"></i>
+                                <input type="text" x-model="searchQuery" placeholder="都道府県名で絞り込み（例: 東京、福岡）" 
+                                       class="w-full pl-8 pr-3 py-1.5 bg-wf-white border border-wf-ash rounded-input text-xs text-wf-obsidian placeholder-wf-slate focus:outline-none focus:border-wf-blue transition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top 3 Podium: Clean 3-Column Studio Feature Cards -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold text-wf-slate font-mono uppercase tracking-eyebrow">TOP THREE LEADERBOARD</span>
+                        <span class="text-xs text-wf-blue font-mono">2026 RANKINGS</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- 2nd Place Card -->
+                        <div class="bg-wf-white p-4 rounded-card border border-wf-ash flex flex-col justify-between hover:border-wf-slate transition">
+                            <div>
+                                <div class="flex items-center justify-between text-xs font-mono mb-2">
+                                    <span class="bg-wf-mist text-wf-slate px-1.5 py-0.5 rounded-tag font-semibold">NO. 2</span>
+                                    <span class="text-wf-slate">RANK 02</span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-wf-obsidian" x-text="getTopThree()[1]?.name"></h3>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-wf-ash flex items-baseline justify-between">
+                                <span class="text-2xl font-bold font-mono text-wf-obsidian" x-text="getTopThree()[1]?.points"></span>
+                                <span class="text-xs text-wf-slate font-mono">pt</span>
+                            </div>
+                            <div class="text-[11px] text-wf-slate mt-2 flex gap-2 font-mono">
+                                <span>G: <strong class="text-wf-obsidian" x-text="getTopThree()[1]?.gold"></strong></span>
+                                <span>S: <strong class="text-wf-obsidian" x-text="getTopThree()[1]?.silver"></strong></span>
+                                <span>B: <strong class="text-wf-obsidian" x-text="getTopThree()[1]?.bronze"></strong></span>
+                            </div>
+                        </div>
+
+                        <!-- 1st Place Card (Webflow Highlight Blue Accent) -->
+                        <div class="bg-wf-white p-4 rounded-card border-2 border-wf-blue flex flex-col justify-between relative shadow-sm">
+                            <span class="absolute -top-2.5 right-4 bg-wf-blue text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-tag tracking-wider uppercase">
+                                CURRENT LEADER
+                            </span>
+                            <div>
+                                <div class="flex items-center justify-between text-xs font-mono mb-2">
+                                    <span class="bg-wf-blue text-white px-1.5 py-0.5 rounded-tag font-bold">NO. 1</span>
+                                    <span class="text-wf-blue font-semibold">首位独走</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-wf-obsidian tracking-display" x-text="getTopThree()[0]?.name"></h3>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-wf-ash flex items-baseline justify-between">
+                                <span class="text-3xl font-extrabold font-mono text-wf-blue" x-text="getTopThree()[0]?.points"></span>
+                                <span class="text-xs text-wf-slate font-mono">POINTS</span>
+                            </div>
+                            <div class="text-[11px] text-wf-slate mt-2 flex gap-2.5 font-mono">
+                                <span>🥇 <strong class="text-wf-obsidian" x-text="getTopThree()[0]?.gold"></strong></span>
+                                <span>🥈 <strong class="text-wf-obsidian" x-text="getTopThree()[0]?.silver"></strong></span>
+                                <span>🥉 <strong class="text-wf-obsidian" x-text="getTopThree()[0]?.bronze"></strong></span>
+                            </div>
+                        </div>
+
+                        <!-- 3rd Place Card -->
+                        <div class="bg-wf-white p-4 rounded-card border border-wf-ash flex flex-col justify-between hover:border-wf-slate transition">
+                            <div>
+                                <div class="flex items-center justify-between text-xs font-mono mb-2">
+                                    <span class="bg-wf-mist text-wf-slate px-1.5 py-0.5 rounded-tag font-semibold">NO. 3</span>
+                                    <span class="text-wf-slate">RANK 03</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <h3 class="text-lg font-semibold text-wf-obsidian" x-text="getTopThree()[2]?.name"></h3>
+                                    <span x-show="getTopThree()[2]?.id === homePrefectureId" class="text-[10px] bg-wf-mist text-wf-blue border border-wf-blue/30 px-1 py-0.2 rounded-tag font-mono">我が県</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-wf-ash flex items-baseline justify-between">
+                                <span class="text-2xl font-bold font-mono text-wf-obsidian" x-text="getTopThree()[2]?.points"></span>
+                                <span class="text-xs text-wf-slate font-mono">pt</span>
+                            </div>
+                            <div class="text-[11px] text-wf-slate mt-2 flex gap-2 font-mono">
+                                <span>G: <strong class="text-wf-obsidian" x-text="getTopThree()[2]?.gold"></strong></span>
+                                <span>S: <strong class="text-wf-obsidian" x-text="getTopThree()[2]?.silver"></strong></span>
+                                <span>B: <strong class="text-wf-obsidian" x-text="getTopThree()[2]?.bronze"></strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full Table: Webflow drafting table styling -->
+                <div class="border border-wf-ash rounded-card overflow-hidden">
+                    <div class="bg-wf-mist px-4 py-2.5 border-b border-wf-ash flex justify-between items-center text-xs font-mono text-wf-slate">
+                        <span>PREFECTURE / RANKING</span>
+                        <span>SCORE & MEDAL BREAKDOWN</span>
+                    </div>
+
+                    <div class="divide-y divide-wf-ash bg-wf-white">
+                        <template x-for="(pref, index) in filteredPrefectures" :key="pref.id">
+                            <div @click="openPrefectureDetail(pref)" 
+                                 class="px-4 py-3.5 hover:bg-wf-mist/60 transition cursor-pointer flex items-center justify-between group">
+                                <div class="flex items-center space-x-3.5">
+                                    <!-- Rank Number: Sharp 4px badge -->
+                                    <span class="w-7 h-7 flex items-center justify-center font-mono font-bold text-xs rounded-tag border"
+                                          :class="{
+                                            'bg-wf-blue text-white border-wf-blue': pref.rank === 1,
+                                            'bg-wf-obsidian text-white border-wf-obsidian': pref.rank === 2,
+                                            'bg-wf-mist text-wf-obsidian border-wf-ash': pref.rank > 2
+                                          }" x-text="pref.rank">
+                                    </span>
+
+                                    <div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-semibold text-sm text-wf-obsidian group-hover:text-wf-blue transition" x-text="pref.name"></span>
+                                            <span x-show="pref.id === homePrefectureId" class="bg-wf-mist text-wf-blue text-[10px] px-1.5 py-0.5 rounded-tag font-mono border border-wf-blue/40">HOST / 我が県</span>
+                                            <button @click.stop="toggleFavoritePref(pref.id)" class="text-xs p-1 text-wf-slate hover:text-wf-obsidian">
+                                                <i class="fa-star" :class="isFavoritePref(pref.id) ? 'fa-solid text-wf-blue' : 'fa-regular'"></i>
+                                            </button>
+                                        </div>
+                                        <div class="text-[11px] text-wf-slate flex items-center gap-1.5 mt-0.5 font-mono">
+                                            <span>前回: <span x-text="pref.prevRank + '位'"></span></span>
+                                            <span :class="pref.rank < pref.prevRank ? 'text-wf-blue font-semibold' : (pref.rank > pref.prevRank ? 'text-wf-slate' : 'text-wf-slate')">
+                                                <i class="fa-solid" :class="pref.rank < pref.prevRank ? 'fa-arrow-up' : (pref.rank > pref.prevRank ? 'fa-arrow-down' : 'fa-minus')"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-right">
+                                    <div class="text-base font-bold font-mono text-wf-obsidian">
+                                        <span x-text="pref.points"></span> <span class="text-xs font-normal text-wf-slate">pt</span>
+                                    </div>
+                                    <div class="text-[11px] text-wf-slate font-mono flex gap-2 justify-end mt-0.5">
+                                        <span>G:<strong class="text-wf-obsidian font-semibold" x-text="pref.gold"></strong></span>
+                                        <span>S:<strong class="text-wf-obsidian font-semibold" x-text="pref.silver"></strong></span>
+                                        <span>B:<strong class="text-wf-obsidian font-semibold" x-text="pref.bronze"></strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: 競技・日程 (Sports & Schedule) -->
+            <section x-show="activeTab === 'sports'" class="space-y-6">
+                <div>
+                    <span class="text-[12px] font-semibold text-wf-slate uppercase tracking-eyebrow font-mono">DISCIPLINES & TIMETABLE</span>
+                    <h2 class="text-2xl sm:text-3xl font-semibold tracking-display text-wf-obsidian mt-1">競技別日程・速報</h2>
+                    <p class="text-sm text-wf-slate mt-1.5">市内外の会場で行われている全競技の進行状況と本日の試合速報です。</p>
+                </div>
+
+                <!-- Webflow Filter Controls (4px border-radius, clean border) -->
+                <div class="flex items-center space-x-2 overflow-x-auto hide-scrollbar pb-1">
+                    <button @click="sportCategoryFilter = 'all'" 
+                            :class="sportCategoryFilter === 'all' ? 'bg-wf-blue text-white' : 'bg-wf-white text-wf-slate border border-wf-ash hover:border-wf-slate hover:text-wf-obsidian'"
+                            class="px-3.5 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition">
+                        すべての競技
+                    </button>
+                    <button @click="sportCategoryFilter = 'ongoing'" 
+                            :class="sportCategoryFilter === 'ongoing' ? 'bg-wf-blue text-white' : 'bg-wf-white text-wf-slate border border-wf-ash hover:border-wf-slate hover:text-wf-obsidian'"
+                            class="px-3.5 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-wf-mint"></span> 競技中・本日開催
+                    </button>
+                    <button @click="sportCategoryFilter = 'ball'" 
+                            :class="sportCategoryFilter === 'ball' ? 'bg-wf-blue text-white' : 'bg-wf-white text-wf-slate border border-wf-ash hover:border-wf-slate hover:text-wf-obsidian'"
+                            class="px-3.5 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition">
+                        球技
+                    </button>
+                    <button @click="sportCategoryFilter = 'track'" 
+                            :class="sportCategoryFilter === 'track' ? 'bg-wf-blue text-white' : 'bg-wf-white text-wf-slate border border-wf-ash hover:border-wf-slate hover:text-wf-obsidian'"
+                            class="px-3.5 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition">
+                        陸上・水泳
+                    </button>
+                    <button @click="sportCategoryFilter = 'budo'" 
+                            :class="sportCategoryFilter === 'budo' ? 'bg-wf-blue text-white' : 'bg-wf-white text-wf-slate border border-wf-ash hover:border-wf-slate hover:text-wf-obsidian'"
+                            class="px-3.5 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition">
+                        武道・格闘技
+                    </button>
+                </div>
+
+                <!-- Webflow 2-Column Feature Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <template x-for="sport in filteredSports" :key="sport.id">
+                        <div @click="openSportDetail(sport)" 
+                             class="bg-wf-white rounded-card p-5 border border-wf-ash hover:border-wf-obsidian transition cursor-pointer flex flex-col justify-between space-y-4 group">
+                            
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-tag bg-wf-mist text-wf-obsidian flex items-center justify-center text-base border border-wf-ash">
+                                        <i class="fa-solid" :class="sport.icon"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-wf-obsidian text-base group-hover:text-wf-blue transition" x-text="sport.name"></h3>
+                                        <p class="text-xs text-wf-slate" x-text="sport.venue"></p>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-0.5 rounded-tag text-[10px] font-mono font-medium border"
+                                      :class="{
+                                        'bg-wf-blue text-white border-wf-blue': sport.status === 'LIVE 競技中',
+                                        'bg-wf-mist text-wf-obsidian border-wf-ash': sport.status === '本日決勝',
+                                        'bg-wf-white text-wf-slate border-wf-ash': sport.status === '日程終了',
+                                        'bg-wf-mist text-wf-slate border-wf-ash': sport.status === '明日開幕'
+                                      }"
+                                      x-text="sport.status">
+                                </span>
+                            </div>
+
+                            <!-- Result Snippet in Code/Data Container -->
+                            <div class="bg-wf-mist p-3 rounded-tag border border-wf-ash/70 text-xs">
+                                <div class="text-[10px] font-mono text-wf-slate uppercase tracking-wider mb-1" x-text="sport.latestCategory"></div>
+                                <div class="text-wf-obsidian font-medium font-mono truncate" x-text="sport.latestResult"></div>
+                            </div>
+
+                            <div class="flex items-center justify-between text-xs text-wf-slate pt-2 border-t border-wf-ash font-mono">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-regular fa-calendar"></i> <span x-text="sport.datePeriod"></span>
+                                </span>
+                                <span class="text-wf-blue font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition">
+                                    対戦表・詳細 →
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- TAB 3: 市ゆかりの選手・会場情報 (City Highlights & Local Venues) -->
+            <section x-show="activeTab === 'local'" class="space-y-6">
+                <!-- Webflow Split Feature Hero (Drafting Studio aesthetic) -->
+                <div class="border border-wf-ash rounded-card p-6 bg-wf-mist/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="space-y-2 max-w-lg">
+                        <span class="text-[11px] font-mono font-semibold text-wf-blue uppercase tracking-eyebrow">CITY ATHLETES & VENUES</span>
+                        <h2 class="text-xl sm:text-2xl font-semibold tracking-display text-wf-obsidian">
+                            我が街の代表選手・市内競技会場
+                        </h2>
+                        <p class="text-xs sm:text-sm text-wf-slate leading-relaxed">
+                            市出身・ゆかりの国スポ日本代表アスリートへ応援メッセージを届けましょう。市内各会場のアクセス・無料シャトル情報も掲載しています。
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-block bg-wf-white border border-wf-ash rounded-card p-3 font-mono text-center min-w-[90px]">
+                            <span class="block text-2xl font-bold text-wf-blue" x-text="cityAthletes.length"></span>
+                            <span class="text-[10px] text-wf-slate">ATHLETES</span>
+                        </span>
+                        <span class="inline-block bg-wf-white border border-wf-ash rounded-card p-3 font-mono text-center min-w-[90px]">
+                            <span class="block text-2xl font-bold text-wf-obsidian" x-text="cityVenues.length"></span>
+                            <span class="text-[10px] text-wf-slate">VENUES</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Webflow Sub-segment Switcher (4px corners, clean hairline ash) -->
+                <div class="flex border border-wf-ash rounded-tag overflow-hidden text-xs font-medium bg-wf-white">
+                    <button @click="localSubTab = 'athletes'" 
+                            :class="localSubTab === 'athletes' ? 'bg-wf-obsidian text-white' : 'text-wf-slate hover:text-wf-obsidian hover:bg-wf-mist'"
+                            class="flex-1 py-2.5 text-center transition">
+                        市ゆかりの選手（<span x-text="cityAthletes.length"></span>名）
+                    </button>
+                    <button @click="localSubTab = 'venues'" 
+                            :class="localSubTab === 'venues' ? 'bg-wf-obsidian text-white' : 'text-wf-slate hover:text-wf-obsidian hover:bg-wf-mist'"
+                            class="flex-1 py-2.5 text-center transition">
+                        市内開催会場ガイド（<span x-text="cityVenues.length"></span>か所）
+                    </button>
+                </div>
+
+                <!-- Athletes List (8px card radius, 4px button radius) -->
+                <div x-show="localSubTab === 'athletes'" class="space-y-3">
+                    <template x-for="athlete in cityAthletes" :key="athlete.id">
+                        <div class="bg-wf-white rounded-card p-4 border border-wf-ash flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-wf-slate transition">
+                            <div class="flex items-center space-x-3.5">
+                                <img :src="athlete.photo" 
+                                     :alt="athlete.name" 
+                                     onerror="this.onerror=null; this.src='https://placehold.co/150x150/f0f0f0/080808?text=Athlete';"
+                                     class="w-14 h-14 rounded-frame object-cover border border-wf-ash flex-shrink-0 bg-wf-mist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] font-mono font-medium bg-wf-mist text-wf-obsidian px-1.5 py-0.5 rounded-tag border border-wf-ash" x-text="athlete.sport"></span>
+                                        <span class="text-xs font-semibold text-wf-blue font-mono" x-text="athlete.resultStatus"></span>
+                                    </div>
+                                    <h3 class="font-semibold text-wf-obsidian text-base mt-1" x-text="athlete.name"></h3>
+                                    <p class="text-xs text-wf-slate" x-text="athlete.affiliation"></p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-wf-ash">
+                                <div class="text-xs text-wf-slate font-mono">
+                                    <span>次戦: </span><strong class="text-wf-obsidian" x-text="athlete.nextMatch"></strong>
+                                </div>
+                                <!-- Primary Action Filled Button: Webflow Blue #146ef5 -->
+                                <button @click="openCheerModal(athlete)" 
+                                        class="bg-wf-blue hover:bg-wf-indigo text-white text-xs font-medium px-4 py-2 rounded-btn transition flex items-center gap-1.5">
+                                    <i class="fa-regular fa-paper-plane text-xs"></i> 応援を送る
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Venues List -->
+                <div x-show="localSubTab === 'venues'" class="space-y-3">
+                    <template x-for="venue in cityVenues" :key="venue.id">
+                        <div class="bg-wf-white rounded-card p-5 border border-wf-ash space-y-3.5">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h3 class="font-semibold text-wf-obsidian text-base sm:text-lg" x-text="venue.name"></h3>
+                                    <p class="text-xs text-wf-slate mt-0.5 font-mono" x-text="venue.address"></p>
+                                </div>
+                                <span class="bg-wf-mist text-wf-obsidian text-[10px] font-mono px-2 py-0.5 rounded-tag border border-wf-ash font-medium" x-text="venue.sportsHeld"></span>
+                            </div>
+
+                            <div class="bg-wf-mist/60 p-3 rounded-tag border border-wf-ash/70 text-xs space-y-1.5 text-wf-slate font-mono">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-bus text-wf-obsidian w-4"></i>
+                                    <span class="text-wf-obsidian" x-text="venue.access"></span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-square-parking text-wf-obsidian w-4"></i>
+                                    <span class="text-wf-obsidian" x-text="venue.parking"></span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                                <!-- Ghost/Outline Button -->
+                                <a :href="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(venue.name)" target="_blank" 
+                                   class="flex-1 bg-wf-white border border-wf-ash text-wf-obsidian hover:border-wf-obsidian text-center py-2 rounded-btn font-medium text-xs transition flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> 地図・アクセス
+                                </a>
+                                <!-- Primary Action Button -->
+                                <button @click="showVenueNotice = venue.name" 
+                                        class="flex-1 bg-wf-blue hover:bg-wf-indigo text-white text-center py-2 rounded-btn font-medium text-xs transition flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-info text-[10px]"></i> 会場案内・シャトル情報
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- TAB 4: 速報ニュース (Live News & Bulletins) -->
+            <section x-show="activeTab === 'news'" class="space-y-4">
+                <div class="flex items-center justify-between pb-2 border-b border-wf-ash">
+                    <div>
+                        <span class="text-[12px] font-semibold text-wf-slate uppercase tracking-eyebrow font-mono">LIVE BULLETINS</span>
+                        <h2 class="font-semibold text-lg text-wf-obsidian tracking-display mt-0.5">大会速報・トピックス</h2>
+                    </div>
+                    <span class="text-xs font-mono text-wf-slate">SYNC: 1 MINUTE INTERVAL</span>
+                </div>
+
+                <div class="space-y-3">
+                    <template x-for="item in newsList" :key="item.id">
+                        <div class="bg-wf-white p-4 rounded-card border border-wf-ash hover:border-wf-obsidian transition space-y-2 group">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-mono text-[10px] font-medium px-1.5 py-0.5 rounded-tag border"
+                                      :class="{
+                                        'bg-wf-blue text-white border-wf-blue': item.category === '結果速報',
+                                        'bg-wf-obsidian text-white border-wf-obsidian': item.category === '新記録・優勝',
+                                        'bg-wf-mist text-wf-obsidian border-wf-ash': item.category === '市代表情報'
+                                      }" x-text="item.category">
+                                </span>
+                                <span class="text-wf-slate font-mono text-[11px]" x-text="item.time"></span>
+                            </div>
+                            <h3 class="font-semibold text-wf-obsidian text-sm sm:text-base leading-snug group-hover:text-wf-blue transition" x-text="item.title"></h3>
+                            <p class="text-xs text-wf-slate leading-relaxed font-normal" x-text="item.summary"></p>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal 1: 都道府県別詳細モーダル -->
+        <div x-show="selectedPref" class="fixed inset-0 z-50 bg-wf-obsidian/60 backdrop-blur-xs flex items-center justify-center p-4" x-transition>
+            <div @click.outside="selectedPref = null" class="bg-wf-white w-full max-w-lg rounded-frame max-h-[85vh] overflow-y-auto p-6 space-y-5 shadow-wf-frame border border-wf-ash">
+                <div class="flex items-start justify-between border-b pb-4 border-wf-ash">
+                    <div>
+                        <div class="flex items-center space-x-2.5">
+                            <h2 class="text-xl font-bold text-wf-obsidian tracking-display" x-text="selectedPref?.name"></h2>
+                            <span class="bg-wf-blue text-white text-xs font-mono font-semibold px-2 py-0.5 rounded-tag" x-text="'NO.' + selectedPref?.rank"></span>
+                        </div>
+                        <p class="text-xs text-wf-slate mt-1 font-mono">合計獲得ポイント: <span class="font-bold text-wf-obsidian text-sm" x-text="selectedPref?.points + ' pt'"></span></p>
+                    </div>
+                    <button @click="selectedPref = null" class="w-7 h-7 rounded-btn border border-wf-ash text-wf-slate hover:text-wf-obsidian transition flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- 3-Column Medal Breakdown -->
+                <div class="grid grid-cols-3 gap-2.5 text-center font-mono">
+                    <div class="bg-wf-mist p-3 rounded-tag border border-wf-ash">
+                        <div class="text-xs text-wf-slate">GOLD</div>
+                        <div class="text-xl font-bold text-wf-obsidian mt-0.5" x-text="selectedPref?.gold"></div>
+                    </div>
+                    <div class="bg-wf-mist p-3 rounded-tag border border-wf-ash">
+                        <div class="text-xs text-wf-slate">SILVER</div>
+                        <div class="text-xl font-bold text-wf-obsidian mt-0.5" x-text="selectedPref?.silver"></div>
+                    </div>
+                    <div class="bg-wf-mist p-3 rounded-tag border border-wf-ash">
+                        <div class="text-xs text-wf-slate">BRONZE</div>
+                        <div class="text-xl font-bold text-wf-obsidian mt-0.5" x-text="selectedPref?.bronze"></div>
+                    </div>
+                </div>
+
+                <!-- Top Sports Breakdown -->
+                <div class="space-y-2">
+                    <h3 class="text-xs font-semibold text-wf-slate uppercase tracking-eyebrow font-mono">
+                        TOP SCORING EVENTS
+                    </h3>
+                    <div class="space-y-1.5">
+                        <template x-for="sport in selectedPref?.topSports" :key="sport.name">
+                            <div class="flex items-center justify-between text-xs p-2.5 bg-wf-mist rounded-tag border border-wf-ash/70 font-mono">
+                                <span class="font-medium text-wf-obsidian font-sans" x-text="sport.name"></span>
+                                <span class="font-bold text-wf-blue" x-text="sport.score + ' pt (' + sport.result + ')'"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button @click="setHomePrefecture(selectedPref.id); selectedPref = null" 
+                            class="flex-1 py-2.5 bg-wf-blue text-white font-medium rounded-btn text-xs hover:bg-wf-indigo transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-house"></i>
+                        <span>この県を「我が県」に設定</span>
+                    </button>
+                    <button @click="selectedPref = null" class="px-4 py-2.5 bg-wf-mist text-wf-obsidian border border-wf-ash font-medium rounded-btn text-xs hover:bg-wf-ash transition">
+                        閉じる
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 2: 競技詳細モーダル -->
+        <div x-show="selectedSport" class="fixed inset-0 z-50 bg-wf-obsidian/60 backdrop-blur-xs flex items-center justify-center p-4" x-transition>
+            <div @click.outside="selectedSport = null" class="bg-wf-white w-full max-w-lg rounded-frame max-h-[85vh] overflow-y-auto p-6 space-y-5 shadow-wf-frame border border-wf-ash">
+                <div class="flex items-start justify-between border-b pb-4 border-wf-ash">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-tag bg-wf-blue text-white flex items-center justify-center text-lg">
+                            <i class="fa-solid" :class="selectedSport?.icon"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-wf-obsidian tracking-display" x-text="selectedSport?.name"></h2>
+                            <p class="text-xs text-wf-slate font-mono" x-text="selectedSport?.venue"></p>
+                        </div>
+                    </div>
+                    <button @click="selectedSport = null" class="w-7 h-7 rounded-btn border border-wf-ash text-wf-slate hover:text-wf-obsidian transition flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-2.5">
+                    <h3 class="text-xs font-semibold text-wf-slate uppercase tracking-eyebrow font-mono">
+                        MATCH RESULTS & BRACKET
+                    </h3>
+
+                    <div class="space-y-2">
+                        <template x-for="match in selectedSport?.matches" :key="match.title">
+                            <div class="p-3 border border-wf-ash rounded-tag space-y-2 text-xs bg-wf-mist/50">
+                                <div class="flex justify-between font-mono text-[11px] text-wf-slate">
+                                    <span x-text="match.title"></span>
+                                    <span class="text-wf-blue font-semibold" x-text="match.time"></span>
+                                </div>
+                                <div class="flex items-center justify-between font-mono font-bold text-sm text-wf-obsidian bg-wf-white p-2.5 rounded-tag border border-wf-ash">
+                                    <span x-text="match.teamA"></span>
+                                    <span class="text-wf-blue px-2 py-0.5 rounded-tag bg-wf-mist border border-wf-ash text-xs" x-text="match.score"></span>
+                                    <span x-text="match.teamB"></span>
+                                </div>
+                                <p class="text-[11px] text-wf-slate" x-text="match.note"></p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <button @click="selectedSport = null" class="w-full py-2.5 bg-wf-obsidian text-white font-medium rounded-btn text-xs hover:bg-wf-charcoal transition">
+                    閉じる
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal 3: 選手への応援メッセージ送信モーダル -->
+        <div x-show="cheerAthlete" class="fixed inset-0 z-50 bg-wf-obsidian/60 backdrop-blur-xs flex items-center justify-center p-4" x-transition>
+            <div @click.outside="cheerAthlete = null" class="bg-wf-white w-full max-w-md rounded-frame p-6 space-y-4 shadow-wf-frame border border-wf-ash">
+                <div class="flex justify-between items-center border-b pb-3 border-wf-ash">
+                    <h3 class="font-semibold text-wf-obsidian text-sm flex items-center gap-2">
+                        <i class="fa-regular fa-paper-plane text-wf-blue"></i>
+                        <span><span x-text="cheerAthlete?.name"></span> 選手へ応援を送信</span>
+                    </h3>
+                    <button @click="cheerAthlete = null" class="text-wf-slate hover:text-wf-obsidian">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-mono font-medium text-wf-slate">MESSAGE CONTENT</label>
+                    <textarea x-model="cheerText" rows="3" placeholder="全力で応援しています！頑張ってください！" 
+                              class="w-full p-3 bg-wf-mist border border-wf-ash rounded-input text-xs text-wf-obsidian focus:border-wf-blue focus:bg-wf-white focus:outline-none transition"></textarea>
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                    <button @click="cheerAthlete = null" class="flex-1 py-2 bg-wf-white border border-wf-ash text-wf-slate hover:text-wf-obsidian font-medium text-xs rounded-btn transition">キャンセル</button>
+                    <!-- Webflow Primary Action Button -->
+                    <button @click="sendCheer()" class="flex-1 py-2 bg-wf-blue hover:bg-wf-indigo text-white font-medium text-xs rounded-btn transition">
+                        メッセージ送信
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 4: Notice Modal -->
+        <div x-show="showVenueNotice" class="fixed inset-0 z-50 bg-wf-obsidian/60 backdrop-blur-xs flex items-center justify-center p-4" x-transition>
+            <div @click.outside="showVenueNotice = null" class="bg-wf-white w-full max-w-md rounded-frame p-6 space-y-4 shadow-wf-frame border border-wf-ash">
+                <h3 class="font-semibold text-wf-obsidian text-base" x-text="showVenueNotice + ' 入場案内'"></h3>
+                <p class="text-xs text-wf-slate leading-relaxed">
+                    大会当日は会場周辺の混雑が予想されます。市内主要駅から運行される無料シャトルバス（15分間隔運行）をご利用ください。<br><br>
+                    一般観覧スタンドの開場時間は競技開始の60分前となります。
+                </p>
+                <button @click="showVenueNotice = null" class="w-full py-2 bg-wf-obsidian text-white font-medium text-xs rounded-btn hover:bg-wf-charcoal transition">確認しました</button>
+            </div>
+        </div>
+
+        <!-- Info / About Modal -->
+        <div x-show="showInfoModal" class="fixed inset-0 z-50 bg-wf-obsidian/60 backdrop-blur-xs flex items-center justify-center p-4" x-transition>
+            <div @click.outside="showInfoModal = false" class="bg-wf-white w-full max-w-md rounded-frame p-6 space-y-4 shadow-wf-frame border border-wf-ash">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-tag bg-wf-blue"></div>
+                    <h3 class="font-semibold text-wf-obsidian text-base">Webflow Design System 実装仕様</h3>
+                </div>
+                <p class="text-xs text-wf-slate leading-relaxed">
+                    本ポータルは <strong>Webflow Design System</strong>（White Studio, Black Ink `#080808`, Webflow Blue `#146ef5`, 4pxボタン/8pxカード角丸、ヘアライン Ash ボーダー `#d8d8d8`）に基づいて構築されています。<br><br>
+                    装飾的グラデーションを排し、製図台のような高い可読性と幾何学的な引き締まりを持たせています。
+                </p>
+                <button @click="showInfoModal = false" class="w-full py-2 bg-wf-obsidian text-white font-medium text-xs rounded-btn hover:bg-wf-charcoal transition">閉じる</button>
+            </div>
+        </div>
+
+        <!-- Toast Notification (Webflow Blue accent pill replaced by 4px tag) -->
+        <div x-show="toastMessage" x-transition 
+             class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-wf-obsidian text-white text-xs font-mono px-4 py-2.5 rounded-tag shadow-wf-elevated z-50 flex items-center gap-2 border border-wf-charcoal">
+            <span class="w-2 h-2 rounded-full bg-wf-mint"></span>
+            <span x-text="toastMessage"></span>
+        </div>
+
+        <!-- Persistent Browser/Studio Status Indicator (Bottom right) -->
+        <div class="fixed bottom-4 right-4 z-40 hidden md:flex items-center gap-2.5 bg-wf-white text-wf-obsidian px-3 py-2 rounded-frame border border-wf-ash shadow-wf-frame cursor-pointer hover:border-wf-blue transition"
+             @click="showToast('市公式アプリのダウンロード案内を表示しました')">
+            <div class="w-6 h-6 bg-wf-mist border border-wf-ash rounded-tag flex items-center justify-center text-wf-blue text-xs font-bold font-mono">
+                <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <div class="text-[11px] font-mono leading-tight">
+                <span class="block text-wf-obsidian font-semibold">CITY APP PORTAL</span>
+                <span class="text-wf-slate text-[10px]">SCAN TO SYNC</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function kokuspoApp() {
+            return {
+                activeTab: 'ranking', // 'ranking', 'sports', 'local', 'news'
+                trophyType: 'tenno', // 'tenno' (天皇杯), 'kogo' (皇后杯)
+                searchQuery: '',
+                sportCategoryFilter: 'all',
+                localSubTab: 'athletes',
+                
+                homePrefectureId: 45, // デフォルト: 45 (宮崎県)
+
+                selectedPref: null,
+                selectedSport: null,
+                cheerAthlete: null,
+                cheerText: '',
+                showVenueNotice: null,
+                showInfoModal: false,
+                toastMessage: null,
+
+                favoritesPref: [45, 13], // 45: 宮崎県, 13: 東京都
+
+                // 47都道府県 完全データ（宮崎県を我が県 isHome: true に設定）
+                prefectures: [
+                    { id: 13, name: '東京都', rank: 1, prevRank: 1, points: 1420, gold: 28, silver: 20, bronze: 16, isHome: false, topSports: [{name:'陸上競技', score:180, result:'優勝'}, {name:'競泳', score:160, result:'優勝'}], kogoRank: 1, kogoPoints: 720 },
+                    { id: 27, name: '大阪府', rank: 2, prevRank: 3, points: 1240, gold: 21, silver: 17, bronze: 15, isHome: false, topSports: [{name:'体操', score:150, result:'準優勝'}, {name:'バスケットボール', score:120, result:'ベスト4'}], kogoRank: 3, kogoPoints: 610 },
+                    { id: 45, name: '宮崎県', rank: 3, prevRank: 4, points: 1190, gold: 20, silver: 16, bronze: 13, isHome: true, topSports: [{name:'陸上競技', score:170, result:'優勝'}, {name:'柔道', score:160, result:'優勝'}, {name:'サーフィン', score:130, result:'優勝'}], kogoRank: 2, kogoPoints: 630 },
+                    { id: 40, name: '福岡県', rank: 4, prevRank: 2, points: 1160, gold: 18, silver: 15, bronze: 14, isHome: false, topSports: [{name:'剣道', score:140, result:'優勝'}, {name:'柔道', score:130, result:'準優勝'}], kogoRank: 5, kogoPoints: 570 },
+                    { id: 23, name: '愛知県', rank: 5, prevRank: 5, points: 1130, gold: 17, silver: 15, bronze: 16, isHome: false, topSports: [{name:'体操', score:140, result:'3位'}, {name:'スケート', score:120, result:'優勝'}], kogoRank: 4, kogoPoints: 590 },
+                    { id: 14, name: '神奈川県', rank: 6, prevRank: 6, points: 1090, gold: 16, silver: 18, bronze: 12, isHome: false, topSports: [{name:'サッカー', score:130, result:'準優勝'}], kogoRank: 6, kogoPoints: 540 },
+                    { id: 28, name: '兵庫県', rank: 7, prevRank: 7, points: 990, gold: 14, silver: 13, bronze: 15, isHome: false, topSports: [{name:'陸上競技', score:110, result:'4位'}], kogoRank: 7, kogoPoints: 490 },
+                    { id: 11, name: '埼玉県', rank: 8, prevRank: 8, points: 960, gold: 13, silver: 15, bronze: 11, isHome: false, topSports: [{name:'卓球', score:115, result:'3位'}], kogoRank: 8, kogoPoints: 470 },
+                    { id: 12, name: '千葉県', rank: 9, prevRank: 9, points: 920, gold: 12, silver: 12, bronze: 13, isHome: false, topSports: [{name:'テニス', score:100, result:'ベスト8'}], kogoRank: 9, kogoPoints: 450 },
+                    { id: 1, name: '北海道', rank: 10, prevRank: 10, points: 880, gold: 11, silver: 11, bronze: 12, isHome: false, topSports: [{name:'カーリング', score:120, result:'優勝'}], kogoRank: 10, kogoPoints: 430 },
+                    { id: 22, name: '静岡県', rank: 11, prevRank: 12, points: 850, gold: 10, silver: 12, bronze: 11, isHome: false, topSports: [{name:'サッカー', score:110, result:'3位'}], kogoRank: 11, kogoPoints: 410 },
+                    { id: 34, name: '広島県', rank: 12, prevRank: 11, points: 820, gold: 9, silver: 12, bronze: 10, isHome: false, topSports: [{name:'バレーボール', score:100, result:'ベスト4'}], kogoRank: 13, kogoPoints: 390 },
+                    { id: 26, name: '京都府', rank: 13, prevRank: 14, points: 790, gold: 9, silver: 10, bronze: 11, isHome: false, topSports: [{name:'弓道', score:95, result:'準優勝'}], kogoRank: 12, kogoPoints: 400 },
+                    { id: 8, name: '茨城県', rank: 14, prevRank: 13, points: 760, gold: 8, silver: 11, bronze: 10, isHome: false, topSports: [{name:'レスリング', score:90, result:'3位'}], kogoRank: 15, kogoPoints: 360 },
+                    { id: 43, name: '熊本県', rank: 15, prevRank: 16, points: 740, gold: 8, silver: 9, bronze: 12, isHome: false, topSports: [{name:'バドミントン', score:110, result:'優勝'}], kogoRank: 14, kogoPoints: 370 },
+                    { id: 15, name: '新潟県', rank: 16, prevRank: 15, points: 710, gold: 7, silver: 10, bronze: 9, isHome: false, topSports: [{name:'空手道', score:85, result:'ベスト8'}], kogoRank: 16, kogoPoints: 340 },
+                    { id: 4, name: '宮城県', rank: 17, prevRank: 18, points: 690, gold: 7, silver: 9, bronze: 8, isHome: false, topSports: [{name:'セーリング', score:80, result:'準優勝'}], kogoRank: 17, kogoPoints: 330 },
+                    { id: 46, name: '鹿児島県', rank: 18, prevRank: 17, points: 670, gold: 7, silver: 8, bronze: 9, isHome: false, topSports: [{name:'相撲', score:95, result:'優勝'}], kogoRank: 18, kogoPoints: 320 },
+                    { id: 21, name: '岐阜県', rank: 19, prevRank: 19, points: 650, gold: 6, silver: 9, bronze: 8, isHome: false, topSports: [{name:'ホッケー', score:90, result:'優勝'}], kogoRank: 19, kogoPoints: 310 },
+                    { id: 9, name: '栃木県', rank: 20, prevRank: 21, points: 630, gold: 6, silver: 8, bronze: 8, isHome: false, topSports: [{name:'自転車', score:80, result:'3位'}], kogoRank: 20, kogoPoints: 300 },
+                    { id: 10, name: '群馬県', rank: 21, prevRank: 20, points: 610, gold: 6, silver: 7, bronze: 9, isHome: false, topSports: [{name:'陸上競技', score:75, result:'入賞'}], kogoRank: 21, kogoPoints: 290 },
+                    { id: 24, name: '三重県', rank: 22, prevRank: 23, points: 590, gold: 5, silver: 8, bronze: 7, isHome: false, topSports: [{name:'レスリング', score:85, result:'優勝'}], kogoRank: 22, kogoPoints: 280 },
+                    { id: 20, name: '長野県', rank: 23, prevRank: 22, points: 580, gold: 5, silver: 7, bronze: 8, isHome: false, topSports: [{name:'スピードスケート', score:90, result:'優勝'}], kogoRank: 23, kogoPoints: 275 },
+                    { id: 25, name: '滋賀県', rank: 24, prevRank: 25, points: 560, gold: 5, silver: 7, bronze: 6, isHome: false, topSports: [{name:'ボート', score:80, result:'準優勝'}], kogoRank: 24, kogoPoints: 270 },
+                    { id: 33, name: '岡山県', rank: 25, prevRank: 24, points: 540, gold: 5, silver: 6, bronze: 7, isHome: false, topSports: [{name:'ウエイトリフティング', score:70, result:'3位'}], kogoRank: 25, kogoPoints: 260 },
+                    { id: 7, name: '福島県', rank: 26, prevRank: 27, points: 520, gold: 4, silver: 7, bronze: 6, isHome: false, topSports: [{name:'ソフトボール', score:75, result:'ベスト4'}], kogoRank: 26, kogoPoints: 250 },
+                    { id: 42, name: '長崎県', rank: 27, prevRank: 26, points: 500, gold: 4, silver: 6, bronze: 7, isHome: false, topSports: [{name:'ライフル射撃', score:65, result:'準優勝'}], kogoRank: 27, kogoPoints: 240 },
+                    { id: 17, name: '石川県', rank: 28, prevRank: 29, points: 480, gold: 4, silver: 6, bronze: 5, isHome: false, topSports: [{name:'トランポリン', score:70, result:'優勝'}], kogoRank: 28, kogoPoints: 230 },
+                    { id: 35, name: '山口県', rank: 29, prevRank: 28, points: 470, gold: 4, silver: 5, bronze: 6, isHome: false, topSports: [{name:'柔道', score:60, result:'ベスト8'}], kogoRank: 29, kogoPoints: 225 },
+                    { id: 2, name: '青森県', rank: 30, prevRank: 31, points: 460, gold: 4, silver: 5, bronze: 5, isHome: false, topSports: [{name:'アーチェリー', score:65, result:'3位'}], kogoRank: 30, kogoPoints: 220 },
+                    { id: 44, name: '大分県', rank: 31, prevRank: 30, points: 440, gold: 3, silver: 6, bronze: 5, isHome: false, topSports: [{name:'フェンシング', score:60, result:'ベスト4'}], kogoRank: 31, kogoPoints: 210 },
+                    { id: 41, name: '佐賀県', rank: 32, prevRank: 32, points: 430, gold: 3, silver: 5, bronze: 5, isHome: false, topSports: [{name:'カヌー', score:65, result:'準優勝'}], kogoRank: 32, kogoPoints: 205 },
+                    { id: 38, name: '愛媛県', rank: 33, prevRank: 34, points: 410, gold: 3, silver: 5, bronze: 4, isHome: false, topSports: [{name:'ボート', score:55, result:'3位'}], kogoRank: 33, kogoPoints: 195 },
+                    { id: 3, name: '岩手県', rank: 34, prevRank: 33, points: 390, gold: 3, silver: 4, bronze: 5, isHome: false, topSports: [{name:'軟式野球', score:60, result:'ベスト8'}], kogoRank: 34, kogoPoints: 185 },
+                    { id: 16, name: '富山県', rank: 35, prevRank: 36, points: 380, gold: 3, silver: 4, bronze: 4, isHome: false, topSports: [{name:'ハンドボール', score:50, result:'ベスト8'}], kogoRank: 35, kogoPoints: 180 },
+                    { id: 6, name: '山形県', rank: 36, prevRank: 35, points: 360, gold: 2, silver: 5, bronze: 4, isHome: false, topSports: [{name:'スキー', score:60, result:'入賞'}], kogoRank: 36, kogoPoints: 170 },
+                    { id: 37, name: '香川県', rank: 37, prevRank: 38, points: 350, gold: 2, silver: 4, bronze: 5, isHome: false, topSports: [{name:'銃剣道', score:50, result:'ベスト4'}], kogoRank: 37, kogoPoints: 165 },
+                    { id: 5, name: '秋田県', rank: 38, prevRank: 37, points: 330, gold: 2, silver: 4, bronze: 3, isHome: false, topSports: [{name:'ラグビーフットボール', score:55, result:'ベスト8'}], kogoRank: 38, kogoPoints: 155 },
+                    { id: 19, name: '山梨県', rank: 39, prevRank: 40, points: 320, gold: 2, silver: 3, bronze: 4, isHome: false, topSports: [{name:'山岳', score:50, result:'準優勝'}], kogoRank: 39, kogoPoints: 150 },
+                    { id: 30, name: '和歌山県', rank: 40, prevRank: 39, points: 310, gold: 2, silver: 3, bronze: 3, isHome: false, topSports: [{name:'セーリング', score:45, result:'3位'}], kogoRank: 40, kogoPoints: 145 },
+                    { id: 29, name: '奈良県', rank: 41, prevRank: 41, points: 290, gold: 2, silver: 2, bronze: 4, isHome: false, topSports: [{name:'ホッケー', score:40, result:'入賞'}], kogoRank: 41, kogoPoints: 135 },
+                    { id: 18, name: '福井県', rank: 42, prevRank: 43, points: 280, gold: 1, silver: 4, bronze: 3, isHome: false, topSports: [{name:'フェンシング', score:45, result:'ベスト8'}], kogoRank: 42, kogoPoints: 130 },
+                    { id: 36, name: '徳島県', rank: 43, prevRank: 42, points: 260, gold: 1, silver: 3, bronze: 3, isHome: false, topSports: [{name:'カヌー', score:40, result:'入賞'}], kogoRank: 43, kogoPoints: 120 },
+                    { id: 47, name: '沖縄県', rank: 44, prevRank: 44, points: 250, gold: 1, silver: 3, bronze: 2, isHome: false, topSports: [{name:'空手道', score:55, result:'優勝'}], kogoRank: 44, kogoPoints: 115 },
+                    { id: 32, name: '島根県', rank: 45, prevRank: 45, points: 230, gold: 1, silver: 2, bronze: 3, isHome: false, topSports: [{name:'なぎなた', score:35, result:'ベスト8'}], kogoRank: 45, kogoPoints: 105 },
+                    { id: 39, name: '高知県', rank: 46, prevRank: 46, points: 220, gold: 1, silver: 2, bronze: 2, isHome: false, topSports: [{name:'ソフトテニス', score:30, result:'入賞'}], kogoRank: 46, kogoPoints: 100 },
+                    { id: 31, name: '鳥取県', rank: 47, prevRank: 47, points: 200, gold: 1, silver: 1, bronze: 3, isHome: false, topSports: [{name:'ボート', score:30, result:'入賞'}], kogoRank: 47, kogoPoints: 90 }
+                ],
+
+                // Sports Data（宮崎県・宮崎市会場対応）
+                sports: [
+                    {
+                        id: 1,
+                        name: '陸上競技',
+                        categoryGroup: 'track',
+                        icon: 'fa-person-running',
+                        venue: 'ひなた宮崎県総合運動公園 陸上競技場',
+                        status: 'LIVE 競技中',
+                        datePeriod: '10/5(土) - 10/8(火)',
+                        latestCategory: '成年男子 100m 決勝',
+                        latestResult: '🥇 宮崎県代表 (10"14 快挙！)',
+                        matches: [
+                            { title: '成年男子 100m 決勝', time: '14:30 完了', teamA: '宮崎代表', score: '10.14', teamB: '東京代表', note: '宮崎県勢が堂々の金メダル！' },
+                            { title: '少年女子 走高跳 決勝', time: '15:45 進行中', teamA: '宮崎代表', score: '1m80', teamB: '大阪代表', note: '試技継続中・メダル圏内' }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        name: 'バスケットボール',
+                        categoryGroup: 'ball',
+                        icon: 'fa-basketball',
+                        venue: '宮崎市総合体育館 メインアリーナ',
+                        status: '本日決勝',
+                        datePeriod: '10/6(日) - 10/9(水)',
+                        latestCategory: '成年男子 準決勝',
+                        latestResult: '宮崎県 86 - 81 愛知県',
+                        matches: [
+                            { title: '成年男子 準決勝', time: '13:00 完了', teamA: '宮崎県', score: '86 - 81', teamB: '愛知県', note: '地元宮崎が決勝進出決定！' },
+                            { title: '成年女子 決勝', time: '16:00 開始予定', teamA: '東京都', score: 'VS', teamB: '大阪府', note: 'メインコート' }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        name: '柔道',
+                        categoryGroup: 'budo',
+                        icon: 'fa-hand-fist',
+                        venue: 'ひなた武道館（宮崎市）',
+                        status: '日程終了',
+                        datePeriod: '10/4(金) - 10/5(土)',
+                        latestCategory: '成年男子 団体戦 決勝',
+                        latestResult: '🥇 宮崎県 3 - 2 福岡県',
+                        matches: [
+                            { title: '成年男子 団体 決勝', time: '16:20 完了', teamA: '宮崎県', score: '3 - 2', teamB: '福岡県', note: '宮崎県代表が悲願の初制覇！' }
+                        ]
+                    },
+                    {
+                        id: 4,
+                        name: '競泳・水泳',
+                        categoryGroup: 'track',
+                        icon: 'fa-person-swimming',
+                        venue: 'ひなた宮崎県総合運動公園 水泳場',
+                        status: '明日開幕',
+                        datePeriod: '10/7(月) - 10/9(水)',
+                        latestCategory: '公式練習',
+                        latestResult: '明日9:00より予選スタート',
+                        matches: [
+                            { title: '成年男子 200m自由形 予選', time: '明日 09:30', teamA: '宮崎代表 出場予定', score: '-', teamB: '-', note: '第3組レーン4' }
+                        ]
+                    }
+                ],
+
+                // City Athletes Data（宮崎市ゆかりの選手）
+                cityAthletes: [
+                    {
+                        id: 101,
+                        name: '河野 竜也 選手',
+                        sport: '陸上競技（100m・4×100mR）',
+                        affiliation: '宮崎市立宮崎中学校 出身 / 宮崎交通',
+                        resultStatus: '🥇 金メダル獲得！',
+                        nextMatch: '本日 16:30〜 4×100mリレー決勝',
+                        photo: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=150&auto=format&fit=crop&q=80'
+                    },
+                    {
+                        id: 102,
+                        name: '黒木 翔平 選手',
+                        sport: '柔道（成年男子90kg級）',
+                        affiliation: '宮崎日大高校 出身 / 宮崎県警',
+                        resultStatus: '🥇 金メダル獲得！',
+                        nextMatch: '個人・団体全日程制覇',
+                        photo: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=150&auto=format&fit=crop&q=80'
+                    },
+                    {
+                        id: 103,
+                        name: '日高 陽葵 選手',
+                        sport: 'バスケットボール（成年女子）',
+                        affiliation: '宮崎市役所 職員',
+                        resultStatus: 'ベスト4進出中',
+                        nextMatch: '明日 11:30〜 準決勝VS神奈川県',
+                        photo: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=150&auto=format&fit=crop&q=80'
+                    }
+                ],
+
+                // Local Venues Data（宮崎市内の競技会場）
+                cityVenues: [
+                    {
+                        id: 201,
+                        name: 'ひなた宮崎県総合運動公園 陸上競技場',
+                        address: '宮崎市大字熊野1443-12',
+                        sportsHeld: '陸上競技・開会式',
+                        access: 'JR日南線「運動公園駅」徒歩5分 / 宮崎駅より臨時直通バス約25分',
+                        parking: '中央駐車場・南駐車場 1,200台（無料・国スポ臨時規制あり）'
+                    },
+                    {
+                        id: 202,
+                        name: '宮崎市総合体育館',
+                        address: '宮崎市宮崎駅東1-2',
+                        sportsHeld: 'バスケットボール・バレーボール',
+                        access: 'JR宮崎駅 東口より徒歩約8分',
+                        parking: '地下駐車場 150台（公共交通機関利用を推奨）'
+                    },
+                    {
+                        id: 203,
+                        name: 'ひなた武道館',
+                        address: '宮崎市大字熊野1443-12（総合運動公園内）',
+                        sportsHeld: '柔道・剣道・空手道',
+                        access: 'JR日南線「木花駅」徒歩10分',
+                        parking: '総合運動公園内 臨時駐車場'
+                    }
+                ],
+
+                // News Data（宮崎県・宮崎市関連）
+                newsList: [
+                    {
+                        id: 1,
+                        category: '結果速報',
+                        time: '15分前',
+                        title: '宮崎県代表・河野選手が男子100mで快走、地元を沸かせる金メダル獲得！',
+                        summary: 'ひなた宮崎県総合運動公園陸上競技場で行われた男子100m決勝で、宮崎市出身の河野選手が10秒14を記録。圧巻のスパートで優勝を飾りました。'
+                    },
+                    {
+                        id: 2,
+                        category: '新記録・優勝',
+                        time: '1時間前',
+                        title: '宮崎県、男女総合（天皇杯）で第3位へ浮上！歴代最高順位を射程に',
+                        summary: '陸上競技と柔道の連続金メダルにより、宮崎県は合計1190ptを獲得し全国3位に浮上。首位東京都・2位大阪府を猛追しています。'
+                    },
+                    {
+                        id: 3,
+                        category: '市代表情報',
+                        time: '3時間前',
+                        title: '宮崎駅〜ひなた宮崎県総合運動公園シャトルバスの増便について',
+                        summary: '午後のリレー決勝およびバスケットボール準決勝に伴い、宮崎駅東口発着の臨時シャトルバスを10分間隔でピストン運行いたします。'
+                    }
+                ],
+
+                // Computed / Filtered Getters
+                get filteredPrefectures() {
+                    let list = [...this.prefectures];
+                    if (this.trophyType === 'kogo') {
+                        list.sort((a, b) => a.kogoRank - b.kogoRank);
+                    } else {
+                        list.sort((a, b) => a.rank - b.rank);
+                    }
+                    if (this.searchQuery.trim() !== '') {
+                        list = list.filter(p => p.name.includes(this.searchQuery.trim()));
+                    }
+                    return list;
+                },
+
+                get filteredSports() {
+                    if (this.sportCategoryFilter === 'all') return this.sports;
+                    if (this.sportCategoryFilter === 'ongoing') return this.sports.filter(s => s.status.includes('LIVE') || s.status.includes('本日'));
+                    return this.sports.filter(s => s.categoryGroup === this.sportCategoryFilter);
+                },
+
+                getTopThree() {
+                    const sorted = [...this.prefectures].sort((a, b) => {
+                        return this.trophyType === 'kogo' ? (a.kogoRank - b.kogoRank) : (a.rank - b.rank);
+                    });
+                    return sorted.slice(0, 3);
+                },
+
+                getHomePrefecture() {
+                    return this.prefectures.find(p => p.id === this.homePrefectureId) || this.prefectures[0];
+                },
+
+                get sortedPrefecturesById() {
+                    return [...this.prefectures].sort((a, b) => a.id - b.id);
+                },
+
+                setHomePrefecture(id) {
+                    this.homePrefectureId = id;
+                    const pref = this.getHomePrefecture();
+                    this.showToast('我が県を「' + pref.name + '」に設定しました');
+                },
+
+                // Actions & Modals
+                openPrefectureDetail(pref) {
+                    this.selectedPref = pref;
+                },
+
+                openSportDetail(sport) {
+                    this.selectedSport = sport;
+                },
+
+                openCheerModal(athlete) {
+                    this.cheerAthlete = athlete;
+                    this.cheerText = '';
+                },
+
+                sendCheer() {
+                    if(!this.cheerText.trim()) return;
+                    this.cheerAthlete = null;
+                    this.showToast('宮崎県代表選手へ応援メッセージを送信しました');
+                },
+
+                toggleFavoritePref(id) {
+                    if (this.favoritesPref.includes(id)) {
+                        this.favoritesPref = this.favoritesPref.filter(item => item !== id);
+                        this.showToast('お気に入りを解除しました');
+                    } else {
+                        this.favoritesPref.push(id);
+                        this.showToast('マイ都道府県にピン留めしました');
+                    }
+                },
+
+                isFavoritePref(id) {
+                    return this.favoritesPref.includes(id);
+                },
+
+                showToast(msg) {
+                    this.toastMessage = msg;
+                    setTimeout(() => {
+                        this.toastMessage = null;
+                    }, 2500);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
