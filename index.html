@@ -157,15 +157,10 @@
             </div>
 
             <div class="flex items-center space-x-3">
-                <div class="hidden md:flex items-center gap-1.5 text-[15pt] text-wf-slate border border-wf-ash px-3 py-1 rounded-input font-mono">
+                <div class="flex items-center gap-1.5 text-[15pt] text-wf-slate border border-wf-ash px-3 py-1 rounded-input font-mono">
                     <span class="w-2.5 h-2.5 rounded-full bg-wf-mint"></span>
                     <span>ONLINE: 2026 AUTUMN</span>
                 </div>
-                <!-- Primary Action Button: 4px radius, #146ef5 -->
-                <button @click="showInfoModal = true" class="bg-wf-obsidian hover:bg-wf-charcoal text-white text-[15pt] font-medium px-4 py-2 rounded-btn transition flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-[15pt]"></i>
-                    <span>情報ガイド</span>
-                </button>
             </div>
         </header>
 
@@ -200,7 +195,7 @@
             </nav>
 
             <div class="hidden sm:flex items-center text-[15pt] font-mono text-wf-slate ml-3 whitespace-nowrap">
-                <span class="text-wf-blue font-bold mr-1">LIVE</span> 09:30 UPDATED
+                <span class="text-wf-blue font-bold mr-1">LIVE</span> <span x-text="liveTime + ' UPDATED'"></span>
             </div>
         </div>
 
@@ -759,38 +754,11 @@
             </div>
         </div>
 
-        <!-- Info / About Modal -->
-        <div x-show="showInfoModal" class="fixed inset-0 z-50 bg-wf-obsidian/60 backdrop-blur-xs flex items-center justify-center p-4" x-transition>
-            <div @click.outside="showInfoModal = false" class="bg-wf-white w-full max-w-md rounded-frame p-6 space-y-4 shadow-wf-frame border border-wf-ash">
-                <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-tag bg-wf-blue"></div>
-                    <h3 class="font-semibold text-wf-obsidian text-base">Webflow Design System 実装仕様</h3>
-                </div>
-                <p class="text-xs text-wf-slate leading-relaxed">
-                    本ポータルは <strong>Webflow Design System</strong>（White Studio, Black Ink `#080808`, Webflow Blue `#146ef5`, 4pxボタン/8pxカード角丸、ヘアライン Ash ボーダー `#d8d8d8`）に基づいて構築されています。<br><br>
-                    装飾的グラデーションを排し、製図台のような高い可読性と幾何学的な引き締まりを持たせています。
-                </p>
-                <button @click="showInfoModal = false" class="w-full py-2 bg-wf-obsidian text-white font-medium text-xs rounded-btn hover:bg-wf-charcoal transition">閉じる</button>
-            </div>
-        </div>
-
         <!-- Toast Notification (Webflow Blue accent pill replaced by 4px tag) -->
         <div x-show="toastMessage" x-transition 
              class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-wf-obsidian text-white text-xs font-mono px-4 py-2.5 rounded-tag shadow-wf-elevated z-50 flex items-center gap-2 border border-wf-charcoal">
             <span class="w-2 h-2 rounded-full bg-wf-mint"></span>
             <span x-text="toastMessage"></span>
-        </div>
-
-        <!-- Persistent Browser/Studio Status Indicator (Bottom right) -->
-        <div class="fixed bottom-4 right-4 z-40 hidden md:flex items-center gap-2.5 bg-wf-white text-wf-obsidian px-3 py-2 rounded-frame border border-wf-ash shadow-wf-frame cursor-pointer hover:border-wf-blue transition"
-             @click="showToast('市公式アプリのダウンロード案内を表示しました')">
-            <div class="w-6 h-6 bg-wf-mist border border-wf-ash rounded-tag flex items-center justify-center text-wf-blue text-xs font-bold font-mono">
-                <i class="fa-solid fa-qrcode"></i>
-            </div>
-            <div class="text-[11px] font-mono leading-tight">
-                <span class="block text-wf-obsidian font-semibold">CITY APP PORTAL</span>
-                <span class="text-wf-slate text-[10px]">SCAN TO SYNC</span>
-            </div>
         </div>
 
     </div>
@@ -805,6 +773,21 @@
                 localSubTab: 'athletes',
                 
                 homePrefectureId: 45, // デフォルト: 45 (宮崎県)
+                liveTime: '',
+
+                init() {
+                    this.updateLiveTime();
+                    setInterval(() => {
+                        this.updateLiveTime();
+                    }, 1000);
+                },
+
+                updateLiveTime() {
+                    const now = new Date();
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    this.liveTime = `${hours}:${minutes}`;
+                },
 
                 selectedPref: null,
                 selectedSport: null,
